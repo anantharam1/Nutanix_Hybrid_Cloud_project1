@@ -1,3 +1,8 @@
+To: cto@theeccompany.com
+From: av@theeccompany.com
+Date: 21/11/2020
+Subject: HCI Proof of Concept Project Documents
+
 
 Hello CTO,
 
@@ -12,15 +17,11 @@ Here is a summary of the requirements received from you, the Network Operations 
 	•	Final verification is the removal of a key VM and performing a full restoration.
 
 
-
 As requested, the following has been implemented:
 
 	•	A 3-tier application stack with a database server VM, application server VM and web server VM has been built with a separate production and development environments. Production network is called ‘Production-net’ on VLAN ID ‘0’ with subnet IPs - 172.31.0.0/24 and development network is called ‘Development-net’ on VLAN ID 101 with subnet IPs - 172.31.101.0/24.
-	
 	•	Storage container called ‘Images’ has been created to hold Windows and CentOS virtual disk images. Windows image was used to build DB server for production and development environments. CentOS was used to build web and app servers for production and development environments.
-
 	•	First 3 production VMs (app_prod(172.31.0.230), web_prod(172.31.0.228), db_prod) has been configured then the 3 development VMs (app_dev (172.31.101.1), web_dev(172.31.101.2), db_dev(172.31.101.2)) were cloned and network details amended to development environment. Note that ‘db_prod’ name appears as ‘Nutanix-Clone-db_prod’ as this database has been deleted and restored from the backup as a verification of production vm restoration with IP address 172.31.0.211.
-
 	•	Protection Domain called ‘production_vm_protection’ has been configured and all the three production VMs(app_prod, web_prod and db_prod) have been added to this. Snapshots are configured to be taken every 60 mins starting from Nov 20, 2020 07:20:00 PM.
 
 I am attaching a document named ‘Anantharam-HybridCloud-Nutanix_Cluster_as_Built_2020-11-20_200446.xlsx’ containing all the details of the current cluster configuration.
