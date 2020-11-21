@@ -1,43 +1,30 @@
-{\rtf1\ansi\ansicpg1252\cocoartf2513
-\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
-{\colortbl;\red255\green255\blue255;\red62\green62\blue62;\red255\green255\blue255;}
-{\*\expandedcolortbl;;\cssrgb\c30980\c30980\c30980;\cssrgb\c100000\c100000\c100000;}
-\margl1440\margr1440\vieww16080\viewh14220\viewkind0
-\deftab720
-\pard\pardeftab720\partightenfactor0
 
-\f0\fs32 \cf2 \cb3 \expnd0\expndtw0\kerning0
-\
-Hello CTO,\
-\
-As requested, the following 6 VMs have been built. Namely, db-dev, app-dev, web-dev, db-prod, app-prod & web-prod. Here is a summary of what has been done.\
-\
-a. A 3-tier application stack with a database server VM, application server VM and web server VM has been built\
-b. Separate production and development environments have been built.\
-c. The protection configurations for the production environment has been provided using backup/restore with snapshots.\
-d. No more than 1 hour of data loss can happen after a failure.\
-e. Additional tests for VM workload expansion (cloning) and the ability to dynamically add CPU/memory resources to online virtual machines (add 1 vCPU and 2GB memory to the database server) has been done.\
-f. As a final verification, db-prod VM was deleted and was restored from the snapshot.\
-\
-\
-I am attaching a document named \'91Anantharam-HybridCloud-Nutanix_Cluster_as_Built_2020-11-20_200446.xlsx\'92 containing the details of the current cluster configuration.\
-\
-\
-Thanks & Regards,\
-Anantharam Vemuri.\
-\
-\
-\
-\
-\
-\
-\
-\
-\
-\
-\
-\
-\
-\
-\
-}
+Hello CTO,
+
+Here is a summary of the requirements received from you, the Network Operations group and the System Administrator group:
+
+	•	Build a 3-tier application stack with a database server VM, application server VM and web server VM.
+	•	The production and development environments have to be separate. The production network will be managed using IPAM/DHCP from an IP Pool provided by the Network Operations group. The production network will be on vlan 0, using the 172.31.0.0/24 network. The IP Pool will use a Start address of 172.31.0.210 and an End address of 172.31.0.230. The development network will be unmanaged on VLAN 101 using the 172.31.101.0/24 network.
+	•	The production environment requires built-in data protection using backup/restore with snapshots and no more than 1 hour of data loss after a failure.
+	•	Microsoft SQL on Windows, has been chosen for the database tier and the application server and web server tiers will both be Linux based. Each virtual machine will be configured with 1 vCPU and 4 GB of RAM. Configure the Network Time Protocol (NTP) using the public service, pool.ntp.org, and 8.8.8.8 for the Domain Naming Service (DNS). 
+	•	Create a new storage container called Images to hold the Windows and CentOS virtual disk images (C:\Images) to be uploaded to the Image Service. 
+	•	The virtual machine naming convention will be based on a 2-3 letter representation, followed by the environment. Example: Database server for Production, use db-prod. Application for development, use app-dev, etc.
+	•	Final verification is the removal of a key VM and performing a full restoration.
+
+
+
+As requested, the following has been implemented:
+
+	•	A 3-tier application stack with a database server VM, application server VM and web server VM has been built with a separate production and development environments. Production network is called ‘Production-net’ on VLAN ID ‘0’ with subnet IPs - 172.31.0.0/24 and development network is called ‘Development-net’ on VLAN ID 101 with subnet IPs - 172.31.101.0/24.
+	
+	•	Storage container called ‘Images’ has been created to hold Windows and CentOS virtual disk images. Windows image was used to build DB server for production and development environments. CentOS was used to build web and app servers for production and development environments.
+
+	•	First 3 production VMs (app_prod(172.31.0.230), web_prod(172.31.0.228), db_prod) has been configured then the 3 development VMs (app_dev (172.31.101.1), web_dev(172.31.101.2), db_dev(172.31.101.2)) were cloned and network details amended to development environment. Note that ‘db_prod’ name appears as ‘Nutanix-Clone-db_prod’ as this database has been deleted and restored from the backup as a verification of production vm restoration with IP address 172.31.0.211.
+
+	•	Protection Domain called ‘production_vm_protection’ has been configured and all the three production VMs(app_prod, web_prod and db_prod) have been added to this. Snapshots are configured to be taken every 60 mins starting from Nov 20, 2020 07:20:00 PM.
+
+I am attaching a document named ‘Anantharam-HybridCloud-Nutanix_Cluster_as_Built_2020-11-20_200446.xlsx’ containing all the details of the current cluster configuration.
+
+
+Thanks & Regards,
+Anantharam Vemuri.
